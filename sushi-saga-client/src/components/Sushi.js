@@ -16,7 +16,7 @@ const Sushi = (props) => {
       </div>
       <h4 className="sushi-details">
     
-      {console.log(props.sushi)}
+      {/* {console.log(props.sushi)} */}
         {props.sushi.name} - ${props.sushi.price}
       </h4>
     </div>

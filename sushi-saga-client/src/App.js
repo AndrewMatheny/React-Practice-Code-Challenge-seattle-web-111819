@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SushiContainer from './containers/SushiContainer';
 import Table from './containers/Table';
+import WalletForm from './components/WalletForm'
 
 // Endpoint!
 const API = "http://localhost:3000/sushis"
@@ -26,6 +27,12 @@ class App extends Component {
 
   getFourSushi = () => {
     let fourSushi = this.state.allSushi.slice(this.state.counter, this.state.counter + 4)
+    if(fourSushi.length < 4) {
+      this.setState({
+        counter: 0
+      })
+
+    }
     this.setState(PrevState => ({
       newSushi: fourSushi,
       counter: PrevState.counter += 4
@@ -40,6 +47,7 @@ class App extends Component {
       let currentSushi = this.state.newSushi.filter(sushi => {
         return sushi.id !== selectedSushi.id
       })
+      console.log(typeof newBudget)
       let newAllSushi = this.state.allSushi.filter(sushi => sushi.id !== selectedSushi.id)
       this.setState(PrevState => ({
         newSushi: currentSushi,
@@ -50,16 +58,21 @@ class App extends Component {
     } else {
       alert("YOU ARE BROKE!")
     }
-
-  
   }
 
-  // buySushi = (selectedSushi) => {
-   
-  //   this.setState({
-  //     budget: newBudget
-  //   })
-  // }
+  addBudget = (amount) => {
+    console.log(typeof amount)
+    let integerAmount = parseInt(amount)
+    if(!isNaN(integerAmount)){
+      console.log(typeof integerAmount)
+      this.setState(PrevState => ({
+        budget: (PrevState.budget + integerAmount)
+      }))
+    } else {
+      alert("Stop trying to break the program.  Type a number please.")
+    }
+  }
+
 
   componentDidMount(){
     this.fetchSushi()
@@ -71,6 +84,7 @@ class App extends Component {
       <div className="app">
         <SushiContainer eatSushi={this.eatSushi} fourSushi={this.state.newSushi} getFourSushi={this.getFourSushi} allSushi={this.state.allSushi}/>
         <Table plates={this.state.plates} budget={this.state.budget}/>
+        <WalletForm addBudget={this.addBudget}/>
       </div>
     );
   }
